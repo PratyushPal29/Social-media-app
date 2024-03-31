@@ -9,7 +9,8 @@ const helmet = require("helmet")
 const path = require("path")
 const { fileURLToPath } = require('url')
 const { MongoClient } = require('mongodb');
-const register  = require("./controllers/auth")
+const { register } = require("./controllers/auth")
+const authroutes = require("./routes/auth")
 
 // const __filename = require('path').resolve(__filename);
 const filename = path.resolve(__filename);
@@ -21,8 +22,8 @@ app.use(express.json())
 app.use(helmet())
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }))
 app.use(morgan("common"))
-app.use(bodyParser.json({limit: "30mb", extended: true}))
-app.use(bodyParser.urlencoded({limit: "30mb", extended: true}))
+app.use(bodyParser.json({ limit: "30mb", extended: true }))
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }))
 app.use(cors())
 app.use("/assets", express.static(path.join(__dirname, "public/assets")))
 
@@ -35,8 +36,9 @@ const storage = multer.diskStorage({
     }
 })
 
-const upload = multer({storage})
+app.use("/auth", authroutes)
 
+const upload = multer({ storage })
 app.post("/auth/register", upload.single("picture"), register)
 
 const PORT = process.env.PORT || 6001;
