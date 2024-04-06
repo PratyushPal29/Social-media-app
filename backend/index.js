@@ -10,7 +10,11 @@ const path = require("path")
 const { fileURLToPath } = require('url')
 const { MongoClient } = require('mongodb');
 const { register } = require("./controllers/auth")
+const { createPost } = require("./controllers/posts")
 const authroutes = require("./routes/auth")
+const userRoutes = require("./routes/user")
+const postRoutes = require("./routes/posts")
+const verifyToken = require("./middleware/auth")
 
 // const __filename = require('path').resolve(__filename);
 const filename = path.resolve(__filename);
@@ -37,9 +41,12 @@ const storage = multer.diskStorage({
 })
 
 app.use("/auth", authroutes)
+app.use("/user", userRoutes)
+app.use("/posts", postRoutes)
 
 const upload = multer({ storage })
 app.post("/auth/register", upload.single("picture"), register)
+app.post("/posts", verifyToken, upload.single("picture"), createPost)
 
 const PORT = process.env.PORT || 6001;
 mongoose.connect(process.env.MONGO_URL).then(() => {
