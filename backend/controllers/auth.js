@@ -14,23 +14,22 @@ const register = async (req, res) => {
             location,
             occupation
         } = req.body;
+        console.log("Password: ",password)
+        // const salt = await bcrypt.genSalt(10);
+        const passwordHash = await bcrypt.hash(password, 10)
+        console.log("Hash: ",passwordHash)
 
-        const salt = await bcrypt.genSalt();
-        const passwordHash = await bcrypt.hash(password, salt)
-
-        const newUser = new User({
+        const newUser = await User.create({
             firstName,
             lastName,
             email,
             password: passwordHash,
             picturePath,
             friends,
-            location: Math.floor(Math.random() * 1000),
-            occupation: Math.floor(Math.random() * 1000)
+            location: location,
+            occupation: occupation
         })
-
-        const savedUser = await newUser.save()
-        res.status(201).json(savedUser)
+        res.status(201).json(newUser)
 
     } catch (error) {
         res.status(500).json({ error: error.message })

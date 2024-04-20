@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -8,19 +8,46 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+
+    const [credentials, setCredentials] = useState({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+      });
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const response = await fetch("http://localhost:3002/auth/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                firstName: credentials.firstName,
+                lastName: credentials.lastName,
+                email: credentials.email,
+                password: credentials.password,
+                picturePath: "",
+                friends: [],
+                location: "",
+                occupation: ""
+              }),
+            });
+            const json = await response.json();
+            console.log(json);
+        } catch (error) {
+            console.log(error)
+        }
     };
+
+    const onChange = (e) => {
+        setCredentials({...credentials, [e.target.name]: e.target.value})
+    }
 
     return (
         <div class="mx-40 my-40 md:max-w-8xl">
@@ -50,6 +77,7 @@ export default function SignUp() {
                                                 fullWidth
                                                 id="firstName"
                                                 label="First Name"
+                                                onChange={onChange}
                                                 autoFocus
                                             />
                                         </Grid>
@@ -61,6 +89,7 @@ export default function SignUp() {
                                                 label="Last Name"
                                                 name="lastName"
                                                 autoComplete="family-name"
+                                                onChange={onChange}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -69,8 +98,10 @@ export default function SignUp() {
                                                 fullWidth
                                                 id="email"
                                                 label="Email Address"
+                                                type="email"
                                                 name="email"
                                                 autoComplete="email"
+                                                onChange={onChange}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -82,6 +113,7 @@ export default function SignUp() {
                                                 type="password"
                                                 id="password"
                                                 autoComplete="new-password"
+                                                onChange={onChange}
                                             />
                                         </Grid>
                                     </Grid>

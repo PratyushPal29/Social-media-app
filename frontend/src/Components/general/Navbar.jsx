@@ -11,15 +11,16 @@ import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import MailIcon from '@mui/icons-material/Mail';
+import MessageIcon from '@mui/icons-material/Message';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setLogout } from '../../state';
+import { useNavigate } from 'react-router-dom';
 
 function HideOnScroll(props) {
     const { children, window } = props;
@@ -154,7 +155,7 @@ export default function NavBar(props) {
             <MenuItem>
                 <IconButton size="large" aria-label="show 4 new mails" color="inherit">
                     <Badge badgeContent={4} color="error">
-                        <MailIcon />
+                        <MessageIcon />
                     </Badge>
                 </IconButton>
                 <p>Messages</p>
@@ -186,32 +187,20 @@ export default function NavBar(props) {
         </Menu>
     );
 
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const user = useSelector((state) => state.user)
+    // const fullName = `${user.firstName} ${user.lastName}`
 
     return (
         <React.Fragment>
             <CssBaseline />
             <HideOnScroll {...props}>
-                <Box sx={{ flexGrow: 1 }}>
-                    <AppBar position="static">
+                <Box sx={{ display: 'flex', justifyContent: 'center', flexGrow: 1, margin: "2rem" }}>
+                    <AppBar position="static" style={{ backgroundColor: "white", borderRadius: "40px", border: "0.25rem solid black" }}>
                         <Toolbar>
-                            <IconButton
-                                size="large"
-                                edge="start"
-                                color="inherit"
-                                aria-label="open drawer"
-                                sx={{ mr: 2 }}
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Typography
-                                variant="h6"
-                                noWrap
-                                component="div"
-                                sx={{ display: { xs: 'none', sm: 'block' } }}
-                            >
-                                MUI
-                            </Typography>
-                            <Search>
+                        <img class="h-16 w-52 m-4" src="./logo/friends-high-resolution-logo-transparent.png" alt="logo" />
+                            {/* <Search>
                                 <SearchIconWrapper>
                                     <SearchIcon />
                                 </SearchIconWrapper>
@@ -219,21 +208,20 @@ export default function NavBar(props) {
                                     placeholder="Search…"
                                     inputProps={{ 'aria-label': 'search' }}
                                 />
-                            </Search>
+                            </Search> */}
                             <Box sx={{ flexGrow: 1 }} />
                             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                                <IconButton size="large" aria-label="show 4 new mails" color="inherit">
+                                <IconButton size="large" aria-label="show 4 new mails">
                                     <Badge badgeContent={4} color="error">
-                                        <MailIcon />
+                                        <MessageIcon sx={{color: 'black'}}/>
                                     </Badge>
                                 </IconButton>
                                 <IconButton
                                     size="large"
                                     aria-label="show 17 new notifications"
-                                    color="inherit"
                                 >
                                     <Badge badgeContent={17} color="error">
-                                        <NotificationsIcon />
+                                        <NotificationsIcon sx={{color: "black"}}/>
                                     </Badge>
                                 </IconButton>
                                 <IconButton
@@ -243,9 +231,8 @@ export default function NavBar(props) {
                                     aria-controls={menuId}
                                     aria-haspopup="true"
                                     onClick={handleProfileMenuOpen}
-                                    color="inherit"
                                 >
-                                    <AccountCircle />
+                                    <AccountCircle sx={{color: "black"}}/>
                                 </IconButton>
                             </Box>
                             <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
@@ -255,9 +242,8 @@ export default function NavBar(props) {
                                     aria-controls={mobileMenuId}
                                     aria-haspopup="true"
                                     onClick={handleMobileMenuOpen}
-                                    color="inherit"
                                 >
-                                    <MoreIcon />
+                                    <MoreIcon sx={{color: "black"}}/>
                                 </IconButton>
                             </Box>
                         </Toolbar>

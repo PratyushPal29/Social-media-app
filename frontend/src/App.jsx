@@ -8,13 +8,15 @@ import Home from './Components/general/Home';
 function App() {
   return (
     <>
-      <Router>
-        <Routes>
-          <Route exact path="/" element={<LogIn />} />
-          <Route exact path="/signup" element={<SignUp />} />
-          <Route exact path='/home' element={<Home />} />
-        </Routes>
-      </Router>
+      <div className="app">
+        <Router>
+          <Routes>
+            <Route exact path="/" element={<LogIn />} />
+            <Route exact path="/signup" element={<SignUp />} />
+            <Route exact path='/home' element={<Home />} />
+          </Routes>
+        </Router>
+      </div>
     </>
   );
 }
