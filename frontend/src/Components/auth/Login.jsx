@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -9,37 +9,48 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
+import { useDispatch } from "react-redux"
+import {setLogin} from "../../state/index"
 
 const defaultTheme = createTheme();
 
 export default function LogIn() {
-    const [credentials,setCredentials] = useState({email: "", password: ""})
+    const [credentials, setCredentials] = useState({ email: "", password: "" })
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             const response = await fetch("http://localhost:3002/auth/login", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                email: credentials.email,
-                password: credentials.password,
-              }),
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: credentials.email,
+                    password: credentials.password,
+                }),
             });
-            const json = await response.json();
-            console.log(json);
-            navigate("/home")
+            const loggedIn = await response.json();
+            console.log(loggedIn);
+            if (loggedIn) {
+                dispatch(
+                    setLogin({
+                        user: loggedIn.user,
+                        token: loggedIn.token,
+                    })
+                );
+                navigate("/home");
+            }
         } catch (error) {
             console.log(error)
         }
     }
 
     const onChange = (e) => {
-        setCredentials({...credentials, [e.target.name]: e.target.value})
+        setCredentials({ ...credentials, [e.target.name]: e.target.value })
     }
 
     return (

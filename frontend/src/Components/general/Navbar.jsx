@@ -2,16 +2,12 @@ import * as React from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
 import CssBaseline from '@mui/material/CssBaseline';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
 import Slide from '@mui/material/Slide';
-import { styled, alpha } from '@mui/material/styles';
-import InputBase from '@mui/material/InputBase';
 import Badge from '@mui/material/Badge';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
-import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import MessageIcon from '@mui/icons-material/Message';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -46,47 +42,6 @@ HideOnScroll.propTypes = {
      */
     window: PropTypes.func,
 };
-
-const Search = styled('div')(({ theme }) => ({
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
-    '&:hover': {
-        backgroundColor: alpha(theme.palette.common.white, 0.25),
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-    },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-    padding: theme.spacing(0, 2),
-    height: '100%',
-    position: 'absolute',
-    pointerEvents: 'none',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-    color: 'inherit',
-    '& .MuiInputBase-input': {
-        padding: theme.spacing(1, 1, 1, 0),
-        // vertical padding + font size from searchIcon
-        paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-        transition: theme.transitions.create('width'),
-        width: '100%',
-        [theme.breakpoints.up('md')]: {
-            width: '20ch',
-        },
-    },
-}));
-
 
 export default function NavBar(props) {
 
@@ -131,7 +86,10 @@ export default function NavBar(props) {
             onClose={handleMenuClose}
         >
             <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={() => {
+                dispatch(setLogout());
+                navigate("/")
+            }}>Logout</MenuItem>
         </Menu>
     );
 
@@ -190,13 +148,13 @@ export default function NavBar(props) {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const user = useSelector((state) => state.user)
-    // const fullName = `${user.firstName} ${user.lastName}`
+    const fullName = `${user.firstName} ${user.lastName}`
 
     return (
         <React.Fragment>
             <CssBaseline />
             <HideOnScroll {...props}>
-                <Box sx={{ display: 'flex', justifyContent: 'center', flexGrow: 1, margin: "2rem" }}>
+                <Box class="mx-8 mt-4" sx={{ display: 'flex', justifyContent: 'center', flexGrow: 1, boxShadow: "none" }}>
                     <AppBar position="static" style={{ backgroundColor: "white", borderRadius: "40px", border: "0.25rem solid black" }}>
                         <Toolbar>
                         <img class="h-16 w-52 m-4" src="./logo/friends-high-resolution-logo-transparent.png" alt="logo" />

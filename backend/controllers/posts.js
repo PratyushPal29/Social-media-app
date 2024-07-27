@@ -10,10 +10,11 @@ const createPost = async (req, res) => {
             firstName: user.firstName,
             lastName: user.lastName,
             location: user.location,
+            description,
             userPicturePath: user.picturePath,
             picturepath,
             likes: {},
-            comment: []
+            comment: [],
         })
         await newPost.save()
 
@@ -48,7 +49,9 @@ const likePosts = async (req, res) => {
         const { id } = req.params
         const { userId } = req.body
         const post = await Post.findById(id)
+        console.log(post)
         const isLiked = post.likes.get(userId)
+        console.log("Is Liked",isLiked)
 
         if (isLiked) {
             post.likes.delete(userId)
