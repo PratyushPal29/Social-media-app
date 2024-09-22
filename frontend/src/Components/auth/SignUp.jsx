@@ -16,8 +16,7 @@ import { useNavigate } from 'react-router-dom';
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-
-    const theme = useTheme(); // Correctly invoke the useTheme hook to get the theme object
+    const theme = useTheme(); 
     const { palette } = theme;
     const navigate = useNavigate()
 
@@ -63,154 +62,145 @@ export default function SignUp() {
     }
 
     return (
-        <div class="mx-40 my-32 md:max-w-8xl">
-            <div style={{ display: "flex" }}>
-                <div>
-                    <img class="h-48 w-full object-cover md:h-96 md:w-30" src="./logo/logo-no-background.png" alt="logo" />
-                </div>
-                <div className="ml-10">
-                    <ThemeProvider theme={defaultTheme}>
-                        <Container component="main" maxWidth="xs">
-                            <CssBaseline />
-                            <Box
-                                sx={{
-                                    marginTop: 8,
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <Box component="form" noValidate onSubmit={handleSubmit} >
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                autoComplete="given-name"
-                                                name="firstName"
-                                                required
-                                                fullWidth
-                                                id="firstName"
-                                                label="First Name"
-                                                onChange={onChange}
-                                                autoFocus
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                required
-                                                fullWidth
-                                                id="lastName"
-                                                label="Last Name"
-                                                name="lastName"
-                                                autoComplete="family-name"
-                                                onChange={onChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                required
-                                                fullWidth
-                                                id="email"
-                                                label="Email Address"
-                                                type="email"
-                                                name="email"
-                                                autoComplete="email"
-                                                onChange={onChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                required
-                                                fullWidth
-                                                name="password"
-                                                label="Password"
-                                                type="password"
-                                                id="password"
-                                                autoComplete="new-password"
-                                                onChange={onChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <Box
-                                                gridColumn="span 4"
-                                                border={`1px solid `}
-                                                borderRadius="5px"
-                                                p="1rem"
+        <div className="flex flex-col md:flex-row mx-5 md:mx-40 my-20 md:my-32">
+            <div className="flex justify-center md:justify-start">
+                <img 
+                    className="h-24 md:h-48 w-auto object-cover lg:h-96" 
+                    src="./logo/logo-no-background.png" 
+                    alt="logo" 
+                />
+            </div>
+            <div className="flex flex-col justify-center mt-8 md:ml-10 w-full md:w-auto">
+                <ThemeProvider theme={defaultTheme}>
+                    <Container component="main" maxWidth="xs">
+                        <CssBaseline />
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Box component="form" noValidate onSubmit={handleSubmit} >
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            autoComplete="given-name"
+                                            name="firstName"
+                                            required
+                                            fullWidth
+                                            id="firstName"
+                                            label="First Name"
+                                            onChange={onChange}
+                                            autoFocus
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={6}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="lastName"
+                                            label="Last Name"
+                                            name="lastName"
+                                            autoComplete="family-name"
+                                            onChange={onChange}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            id="email"
+                                            label="Email Address"
+                                            type="email"
+                                            name="email"
+                                            autoComplete="email"
+                                            onChange={onChange}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            name="password"
+                                            label="Password"
+                                            type="password"
+                                            id="password"
+                                            autoComplete="new-password"
+                                            onChange={onChange}
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Box
+                                            gridColumn="span 4"
+                                            border={`1px solid `}
+                                            borderRadius="5px"
+                                            p="1rem"
+                                        >
+                                            <Dropzone
+                                                acceptedFiles=".jpg,.jpeg,.png"
+                                                multiple={false}
+                                                name="picturePath"
+                                                type="file"
+                                                onChange={(e) => {
+                                                    setCredentials({...credentials, [e.target.name]: e.target.files[0]})
+                                                }}
                                             >
-                                                <Dropzone
-                                                    acceptedFiles=".jpg,.jpeg,.png"
-                                                    multiple={false}
-                                                    name="picturePath"
-                                                    type="file"
-                                                    onChange={(e) => {
-                                                        setCredentials({...credentials, [e.target.name
-                                                        ]: e.target.files[0]})
-                                                    }}
-                                                >
-                                                    {({ getRootProps, getInputProps }) => (
-                                                        <Box
-                                                            {...getRootProps()}
-                                                            border={`2px dashed ${palette.primary.main}`}
-                                                            p="1rem"
-                                                            sx={{ "&:hover": { cursor: "pointer" } }}
-                                                        >
-                                                            <input {...getInputProps()} />
-                                                            {/* {!values.picture ? (
-                                                            <p>Add Picture Here</p>
-                                                        ) : (
-                                                            <>
-                                                                <Typography>{values.picture.name}</Typography>
-                                                                <EditOutlinedIcon />
-                                                            </>
-                                                        )} */}
-                                                            <p>Add Picture Here</p>
-                                                        </Box>
-                                                    )}
-                                                </Dropzone>
-                                            </Box>
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                required
-                                                fullWidth
-                                                name="location"
-                                                label="Location"
-                                                id="location"
-                                                onChange={onChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                required
-                                                fullWidth
-                                                name="occupation"
-                                                label="Occupation"
-                                                id="occupation"
-                                                onChange={onChange}
-                                            />
-                                        </Grid>
+                                                {({ getRootProps, getInputProps }) => (
+                                                    <Box
+                                                        {...getRootProps()}
+                                                        border={`2px dashed ${palette.primary.main}`}
+                                                        p="1rem"
+                                                        sx={{ "&:hover": { cursor: "pointer" } }}
+                                                    >
+                                                        <input {...getInputProps()} />
+                                                        <p>Add Picture Here</p>
+                                                    </Box>
+                                                )}
+                                            </Dropzone>
+                                        </Box>
                                     </Grid>
-                                    <Button
-                                        type="submit"
-                                        fullWidth
-                                        variant="contained"
-                                        sx={{ mt: 3, mb: 2 }}
-                                    >
-                                        Sign Up
-                                    </Button>
-                                    <Grid container justifyContent="flex-end">
-                                        <Grid item>
-                                            <Link href="/" variant="body2">
-                                                Already have an account? Log in
-                                            </Link>
-                                        </Grid>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            name="location"
+                                            label="Location"
+                                            id="location"
+                                            onChange={onChange}
+                                        />
                                     </Grid>
-                                </Box>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            required
+                                            fullWidth
+                                            name="occupation"
+                                            label="Occupation"
+                                            id="occupation"
+                                            onChange={onChange}
+                                        />
+                                    </Grid>
+                                </Grid>
+                                <Button
+                                    type="submit"
+                                    fullWidth
+                                    variant="contained"
+                                    sx={{ mt: 3, mb: 2 }}
+                                >
+                                    Sign Up
+                                </Button>
+                                <Grid container justifyContent="flex-end">
+                                    <Grid item>
+                                        <Link href="/" variant="body2">
+                                            Already have an account? Log in
+                                        </Link>
+                                    </Grid>
+                                </Grid>
                             </Box>
-                        </Container>
-                    </ThemeProvider>
-                </div>
+                        </Box>
+                    </Container>
+                </ThemeProvider>
             </div>
         </div>
-
     );
 }
